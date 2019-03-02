@@ -1,0 +1,11 @@
+- hosts: all
+  tasks:
+    - name: actualizar debians
+      apt: upgrade=yes update_cache=yes
+      when: ansible_facts['os_family'] == "Debian"
+      become: true
+#       Kenneth
+    - name: Upgrade Centos-Family
+      yum: name='*' update_only=yes update_cache=yes
+      when: ansible_os_family == 'RedHat'
+      become: true

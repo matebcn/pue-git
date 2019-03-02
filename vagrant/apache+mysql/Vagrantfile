@@ -1,0 +1,32 @@
+$mi_script=<<SCRIPT
+apt-get -y update
+apt-get -y install apache2
+SCRIPT
+
+$otro_script=<<SCRIPT
+apt-get -y update
+apt-get -y install default-mysql-server
+SCRIPT
+
+$tercero=<<SCRIPT
+apt-get -y install php7.0
+SCRIPT
+
+Vagrant.configure(2) do |config|
+  config.vm.define "apache" do |config|
+    config.vm.box = "debian/stretch64"
+    config.vm.hostname = "apachefrontal"
+    config.vm.network "private_network", ip: "10.0.7.11"
+    config.vm.provision "shell", inline: $mi_script
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+  end
+
+  config.vm.define "mysql" do |config|
+    config.vm.box = "debian/stretch64"
+    config.vm.hostname = "mysqlbackend"
+    config.vm.network "private_network", ip: "10.0.7.12"
+    config.vm.provision "shell", inline: $otro_script 
+    config.vm.provision "shell", inline: $tercero 
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+  end
+end

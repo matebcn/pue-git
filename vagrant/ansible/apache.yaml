@@ -1,0 +1,10 @@
+- hosts: all
+  tasks:
+    - name: Install apache httpd but avoid starting it immediately (state=present is optional)
+      apt:
+        name: apache2
+        state: present
+    - name: Install PHP
+      apt: 
+        name: libapache2-mod-php5 
+        state: present
